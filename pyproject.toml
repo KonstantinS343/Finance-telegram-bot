@@ -1,0 +1,19 @@
+[tool.poetry]
+name = "finance bot"
+version = "0.1.0"
+description = "Dependencies for telegram bot to account for income and expenses"
+authors = ["Konstantin"]
+packages = [{include = "core"}]
+
+[tool.poetry.dependencies]
+python = "^3.10"
+poetry-dotenv-plugin = "^0.1.0"
+aiogram = "^2.25.1"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry.scripts]
+start="core.telegram_api:launch"
