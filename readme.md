@@ -3,15 +3,20 @@
     poetry shell
     poetry install
 
-# Telegram and Weather settings
+# Pre-launch preparation
+### 1. Telegram settings
+
 To get a telegram bot token, you need to contact the [BotFather](https://t.me/BotFather), after creation he will give you a token.
 
-# Set the enviroment variable
+### 2. Set the enviroment variable
     cd Finance-telegram-bot/core/config
     true > .env
     nano .env 
 Insert your telegram token in the format `TELEGRAM=your_telegram_token`, after saving the file `Ctrl+S` and exiting `Ctrl+X`.
 
+### 3.Database initialization
+    sudo apt install sqlite3 
+    sqlite3 finance.db < createdb.sql
 
 # Project launch
     poetry run start
