@@ -5,4 +5,5 @@ exclude =
       .git,
       __pycache__,
       venv,
-      src/main.py
+      src/main.py,
+      alembic
