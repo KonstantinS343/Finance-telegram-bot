@@ -1,5 +1,4 @@
-from sqlalchemy import String, TIMESTAMP, Column
-from sqlalchemy.orm import relationship
+from sqlalchemy import String, TIMESTAMP, Column, Float
 from sqlalchemy.orm import DeclarativeBase
 
 from datetime import datetime
@@ -14,4 +13,4 @@ class User(Base):
 
     username = Column(String, nullable=False, unique=True, primary_key=True)
     registered_at = Column(TIMESTAMP, default=datetime.utcnow)
-    accounting = relationship('Accounting', back_populates='user')
+    balance = Column(Float, default=0.0)
