@@ -6,21 +6,48 @@ from aiogram.dispatcher import FSMContext
 from telegram.buttons import BUTTON_MANAGE_MONEY, BUTTON_CANCEL
 from main import dp, bot
 from telegram.utils import UserInput
-from .messages import START_MESSAGE
-from middleware.service import (
-    _add_new_user,
+from .messages import (
+    START_MESSAGE,
+    TELEGRAM_USERNAME_EXISTANCE_MESSAGE,
+    USER_INPUT_RULE,
+    FLOAT_NUMBER_ERROR
+)
+from middleware.user import _add_new_user
+from middleware.accounting import (
     _add_new_category,
     _show_all_categories,
     _get_balance,
     _add_income,
-    _add_expenditure)
+    _add_expenditure,
+    _delete_category
+)
+from middleware.general_handlers import (
+    check_telegram_username,
+    check_user_existence,
+    validate_income_and_expenditure,
+    check_category_existance
+)
+from exception import (
+    UserAlreadyExists,
+    UserNameNotDefined,
+    UnsupportedInput,
+    CategoryDoesNotExist
+)
 
 
 @dp.message_handler(commands=['start'])
 async def start_bot(message: types.Message):
-    await _add_new_user(message.from_user.username)
-    await bot.send_sticker(message.from_user.id, sticker='CAACAgIAAxkBAAIxgmR_WduWkzBmN4xogt4TSPMCiukoAAI2FgACcmugS6XaTV2HP2QpLwQ')
-    await message.answer(START_MESSAGE, reply_markup=BUTTON_MANAGE_MONEY)
+    try:
+        await check_telegram_username(message.from_user.username)
+        await check_user_existence(message.from_user.username)
+    except UserNameNotDefined:
+        await message.answer(TELEGRAM_USERNAME_EXISTANCE_MESSAGE, reply_markup=BUTTON_MANAGE_MONEY)
+    except UserAlreadyExists:
+        await message.answer(START_MESSAGE, reply_markup=BUTTON_MANAGE_MONEY)
+    else:
+        await _add_new_user(message.from_user.username)
+        await bot.send_sticker(message.from_user.id, sticker='CAACAgIAAxkBAAIxgmR_WduWkzBmN4xogt4TSPMCiukoAAI2FgACcmugS6XaTV2HP2QpLwQ')
+        await message.answer(START_MESSAGE, reply_markup=BUTTON_MANAGE_MONEY)
 
 
 @dp.message_handler(lambda message: message.text == 'Доход')
@@ -71,10 +98,14 @@ async def categories_show_handler(message: types.Message):
 
 
 @dp.message_handler(lambda message: message.text == 'Удалить категорию')
-async def categories_show_handler(message: types.Message):
+async def categories_delete_handler(message: types.Message):
     logging.info('DELETE CATEGORIES')
     await UserInput.delete_categories_input.set()
     await message.answer('УДАЛЕНИЕ КАТЕГОРИИ:', reply_markup=types.ReplyKeyboardRemove())
+    all_categories = await _show_all_categories(message.from_user.username)
+
+    telegram_formatted_categories = ('\n').join(category.name.capitalize() for category in all_categories)
+    await message.answer('Мои категории:' + telegram_formatted_categories, reply_markup=BUTTON_MANAGE_MONEY)
     await message.answer('Введите название категории', reply_markup=BUTTON_CANCEL)
 
 
@@ -85,32 +116,46 @@ async def balance_show_handler(message: types.Message):
 
     user_balance = await _get_balance(message.from_user.username)
 
-    await message.answer(user_balance[0].balance, reply_markup=BUTTON_MANAGE_MONEY)
+    await message.answer(round(user_balance[0].balance, 2), reply_markup=BUTTON_MANAGE_MONEY)
 
 
 @dp.message_handler(state=UserInput.income_input)
 async def income_input_handler(message: types.Message, state: FSMContext):
-    quantity, category = message.text.split()
-    await _add_income(
-        username=message.from_user.username,
-        quantity=float(quantity),
-        category=category.lower()
-    )
-    await message.answer(text='Новая запись:')
-    await message.answer(text=f'ДОХОД {message.text}', reply_markup=BUTTON_MANAGE_MONEY)
+    try:
+        await validate_income_and_expenditure(message.text, message.from_user.username)
+    except UnsupportedInput:
+        await message.answer(USER_INPUT_RULE, reply_markup=BUTTON_MANAGE_MONEY)
+    except ValueError:
+        await message.answer(FLOAT_NUMBER_ERROR, reply_markup=BUTTON_MANAGE_MONEY)
+    else:
+        quantity, category = message.text.split()
+        await _add_income(
+            username=message.from_user.username,
+            quantity=float(quantity),
+            category=category.lower()
+        )
+        await message.answer('Новая запись:')
+        await message.answer(f'ДОХОД {message.text}', reply_markup=BUTTON_MANAGE_MONEY)
     await state.finish()
 
 
 @dp.message_handler(state=UserInput.expenditure_input)
 async def expenditure_input_handler(message: types.Message, state: FSMContext):
-    quantity, category = message.text.split()
-    await _add_expenditure(
-        username=message.from_user.username,
-        quantity=float(quantity),
-        category=category.lower()
-    )
-    await message.answer(text='Новая запись:')
-    await message.answer(text=f'РАСХОД {message.text}', reply_markup=BUTTON_MANAGE_MONEY)
+    try:
+        await validate_income_and_expenditure(message.text, message.from_user.username)
+    except UnsupportedInput:
+        await message.answer(USER_INPUT_RULE, reply_markup=BUTTON_MANAGE_MONEY)
+    except ValueError:
+        await message.answer(FLOAT_NUMBER_ERROR, reply_markup=BUTTON_MANAGE_MONEY)
+    else:
+        quantity, category = message.text.split()
+        await _add_expenditure(
+            username=message.from_user.username,
+            quantity=float(quantity),
+            category=category.lower()
+        )
+        await message.answer('Новая запись:')
+        await message.answer(f'РАСХОД {message.text}', reply_markup=BUTTON_MANAGE_MONEY)
     await state.finish()
 
 
@@ -123,5 +168,11 @@ async def add_categories_input_handler(message: types.Message, state: FSMContext
 
 @dp.message_handler(state=UserInput.delete_categories_input)
 async def delete_categories_input_handler(message: types.Message, state: FSMContext):
-    await message.answer(text=message.text)
+    try:
+        await check_category_existance(message.text)
+    except CategoryDoesNotExist:
+        await message.answer('Мне кажется или такой категории нет?', reply_markup=BUTTON_MANAGE_MONEY)
+    else:
+        await _delete_category(username=message.from_user.username, category=message.text.lower())
+        await message.answer('Категория успешно удалена!', reply_markup=BUTTON_MANAGE_MONEY)
     await state.finish()

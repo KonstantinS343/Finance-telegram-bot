@@ -14,3 +14,4 @@ class User(Base):
     username = Column(String, nullable=False, unique=True, primary_key=True)
     registered_at = Column(TIMESTAMP, default=datetime.utcnow)
     balance = Column(Float, default=0.0)
+    email = Column(String, nullable=True, unique=True)
