@@ -42,7 +42,7 @@ multidict==6.0.4
     # via
     #   aiohttp
     #   yarl
-psycopg2-binary==2.9.6
+psycopg2-binary==2.9.7
     # via -r requirements.in
 python-dotenv==1.0.0
     # via -r requirements.in
