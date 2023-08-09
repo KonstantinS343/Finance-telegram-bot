@@ -4,7 +4,8 @@ from exception import (
     UserAlreadyExists,
     UserNameNotDefined,
     UnsupportedInput,
-    CategoryDoesNotExist
+    CategoryDoesNotExist,
+    CategoryAlreadyExist
 )
 
 
@@ -28,11 +29,18 @@ async def check_or_add_category(category: str, username: str):
         await _add_new_category(category_name=category, username=username)
 
 
-async def check_category_existance(category: str):
+async def category_does_not_exist(category: str):
     response = await _get_category(category=category)
 
     if not response:
         raise CategoryDoesNotExist
+
+
+async def category_already_exist(category: str):
+    response = await _get_category(category=category)
+
+    if response:
+        raise CategoryAlreadyExist
 
 
 async def validate_income_and_expenditure(user_input: str, username: str):

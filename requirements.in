@@ -5,4 +5,7 @@ asyncpg
 psycopg2-binary
 alembic
 
+redis
+aioredis
+
 python-dotenv

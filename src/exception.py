@@ -20,3 +20,7 @@ class UnsupportedInput(FinanceBotException):
 
 class CategoryDoesNotExist(FinanceBotException):
     pass
+
+
+class CategoryAlreadyExist(FinanceBotException):
+    pass

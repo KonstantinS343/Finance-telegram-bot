@@ -25,13 +25,15 @@ from middleware.general_handlers import (
     check_telegram_username,
     check_user_existence,
     validate_income_and_expenditure,
-    check_category_existance
+    category_does_not_exist,
+    category_already_exist
 )
 from exception import (
     UserAlreadyExists,
     UserNameNotDefined,
     UnsupportedInput,
-    CategoryDoesNotExist
+    CategoryDoesNotExist,
+    CategoryAlreadyExist
 )
 
 
@@ -85,8 +87,7 @@ async def categories_show_handler(message: types.Message):
     await message.answer('Вот список текущих категорий:')
     all_categories = await _show_all_categories(message.from_user.username)
 
-    telegram_formatted_categories = ('\n').join(category.name.capitalize() for category in all_categories)
-    await message.answer(telegram_formatted_categories, reply_markup=BUTTON_MANAGE_MONEY)
+    await message.answer(all_categories, reply_markup=BUTTON_MANAGE_MONEY)
 
 
 @dp.message_handler(lambda message: message.text == 'Добавить категорию')
@@ -104,8 +105,7 @@ async def categories_delete_handler(message: types.Message):
     await message.answer('УДАЛЕНИЕ КАТЕГОРИИ:', reply_markup=types.ReplyKeyboardRemove())
     all_categories = await _show_all_categories(message.from_user.username)
 
-    telegram_formatted_categories = ('\n').join(category.name.capitalize() for category in all_categories)
-    await message.answer('Мои категории:' + telegram_formatted_categories, reply_markup=BUTTON_MANAGE_MONEY)
+    await message.answer('Мои категории:' + all_categories)
     await message.answer('Введите название категории', reply_markup=BUTTON_CANCEL)
 
 
@@ -116,7 +116,7 @@ async def balance_show_handler(message: types.Message):
 
     user_balance = await _get_balance(message.from_user.username)
 
-    await message.answer(round(user_balance[0].balance, 2), reply_markup=BUTTON_MANAGE_MONEY)
+    await message.answer(round(user_balance, 2), reply_markup=BUTTON_MANAGE_MONEY)
 
 
 @dp.message_handler(state=UserInput.income_input)
@@ -136,7 +136,8 @@ async def income_input_handler(message: types.Message, state: FSMContext):
         )
         await message.answer('Новая запись:')
         await message.answer(f'ДОХОД {message.text}', reply_markup=BUTTON_MANAGE_MONEY)
-    await state.finish()
+    finally:
+        await state.finish()
 
 
 @dp.message_handler(state=UserInput.expenditure_input)
@@ -156,23 +157,31 @@ async def expenditure_input_handler(message: types.Message, state: FSMContext):
         )
         await message.answer('Новая запись:')
         await message.answer(f'РАСХОД {message.text}', reply_markup=BUTTON_MANAGE_MONEY)
-    await state.finish()
+    finally:
+        await state.finish()
 
 
 @dp.message_handler(state=UserInput.add_categories_input)
 async def add_categories_input_handler(message: types.Message, state: FSMContext):
-    await _add_new_category(category_name=message.text.lower(), username=message.from_user.username)
-    await message.answer('Категория успешно добавлена!', reply_markup=BUTTON_MANAGE_MONEY)
-    await state.finish()
+    try:
+        await category_already_exist(message.text)
+    except CategoryAlreadyExist:
+        await message.answer('Посмотрите внимательно, кажется такая категория уже существует!', reply_markup=BUTTON_MANAGE_MONEY)
+    else:
+        await _add_new_category(category_name=message.text.lower(), username=message.from_user.username)
+        await message.answer('Категория успешно добавлена!', reply_markup=BUTTON_MANAGE_MONEY)
+    finally:
+        await state.finish()
 
 
 @dp.message_handler(state=UserInput.delete_categories_input)
 async def delete_categories_input_handler(message: types.Message, state: FSMContext):
     try:
-        await check_category_existance(message.text)
+        await category_does_not_exist(message.text)
     except CategoryDoesNotExist:
         await message.answer('Мне кажется или такой категории нет?', reply_markup=BUTTON_MANAGE_MONEY)
     else:
         await _delete_category(username=message.from_user.username, category=message.text.lower())
         await message.answer('Категория успешно удалена!', reply_markup=BUTTON_MANAGE_MONEY)
-    await state.finish()
+    finally:
+        await state.finish()
