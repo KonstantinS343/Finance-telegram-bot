@@ -1,0 +1,42 @@
+version: '3.9'
+
+services:
+  db:
+    image: postgres:15
+    container_name: aiogram_postgres
+    volumes:
+      - ./db:/var/postgresql/data/
+    env_file:
+      - ./src/.env
+
+  app:
+    build:
+      context: .
+    image: aiogram
+    container_name: aiogram_app
+    command: ["/aiogram/scripts/entrypoint.sh"]
+    env_file:
+      - ./src/.env
+    volumes:
+      - .:/aiogram
+    
+    depends_on:
+      - db
+      - redis
+
+  pgadmin:
+    container_name: aiogram_pgadmin
+    image: dpage/pgadmin4
+    environment:
+      - PGADMIN_DEFAULT_EMAIL=pgadmin4@pgadmin.org
+      - PGADMIN_DEFAULT_PASSWORD=admin
+    ports:
+      - "5050:80"
+    depends_on:
+      - db
+
+  redis:
+    image: redis:latest
+    container_name: aiogram_redis
+    ports:
+      - "6378:6379"

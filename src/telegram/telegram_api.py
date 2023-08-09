@@ -84,10 +84,9 @@ async def cancel_input(callback_query: types.CallbackQuery, state: FSMContext):
 @dp.message_handler(lambda message: message.text == 'Категории')
 async def categories_show_handler(message: types.Message):
     logging.info('CATEGORIES')
-    await message.answer('Вот список текущих категорий:')
     all_categories = await _show_all_categories(message.from_user.username)
 
-    await message.answer(all_categories, reply_markup=BUTTON_MANAGE_MONEY)
+    await message.answer('Вот список текущих категорий:\n' + all_categories, reply_markup=BUTTON_MANAGE_MONEY)
 
 
 @dp.message_handler(lambda message: message.text == 'Добавить категорию')

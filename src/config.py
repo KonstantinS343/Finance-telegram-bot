@@ -14,3 +14,6 @@ PORT = os.environ.get('PORT')
 POSTGRES_DB_TEST = os.environ.get('POSTGRES_DB_TEST')
 
 DB_URL = os.environ.get('DB_URL')
+
+REDIS_HOST = os.environ.get('REDIS_HOST')
+REDIS_PORT = os.environ.get('REDIS_PORT')
