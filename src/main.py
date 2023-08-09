@@ -4,16 +4,15 @@ from aiogram import Bot
 from aiogram.dispatcher import Dispatcher
 from aiogram.contrib.fsm_storage.memory import MemoryStorage
 from aiogram.utils import executor
-from aiogram.contrib.fsm_storage.redis import RedisStorage2
 
-from aioredis import Redis
+from redis.asyncio import Redis
 
-from config import TELEGRAM
+from config import TELEGRAM, REDIS_HOST, REDIS_PORT
 
 
 logging.basicConfig(level=logging.INFO)
 
-redis = Redis(host='localhost', port='6379', db='3')
+redis = Redis(host=REDIS_HOST, port=REDIS_PORT, db='3')
 
 memory = MemoryStorage()
 bot = Bot(token=TELEGRAM, parse_mode='html')
