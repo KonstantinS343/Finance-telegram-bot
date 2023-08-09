@@ -17,3 +17,5 @@ DB_URL = os.environ.get('DB_URL')
 
 REDIS_HOST = os.environ.get('REDIS_HOST')
 REDIS_PORT = os.environ.get('REDIS_PORT')
+
+DEBUG = int(os.environ.get('DEBUG'))
