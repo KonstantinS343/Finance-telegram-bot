@@ -8,10 +8,13 @@ from aiogram.utils import executor
 
 from redis.asyncio import Redis
 
-from config import TELEGRAM, REDIS_HOST, REDIS_PORT
+from config import TELEGRAM, REDIS_HOST, REDIS_PORT, DEBUG
 
 
-logging.basicConfig(level=logging.INFO)
+if DEBUG:
+    logging.basicConfig(level=logging.DEBUG)
+else:
+    logging.basicConfig(level=logging.INFO)
 
 redis = Redis(host=REDIS_HOST, port=REDIS_PORT, db='3')
 
