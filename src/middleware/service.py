@@ -6,6 +6,7 @@ async def _execute_insert_update_delete_command(statemant):
         async with session.begin():
 
             await session.execute(statemant)
+            await session.commit()
 
 
 async def _execute_select_command(statemant):

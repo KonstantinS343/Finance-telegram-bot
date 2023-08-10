@@ -9,3 +9,5 @@ redis
 aioredis
 
 python-dotenv
+
+Babel

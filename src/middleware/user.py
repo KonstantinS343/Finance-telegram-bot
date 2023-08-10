@@ -1,4 +1,4 @@
-from sqlalchemy import insert, select
+from sqlalchemy import insert, select, update
 
 
 from user.models import User
@@ -14,3 +14,8 @@ async def _get_current_user(username: str):
     statemant = select(User).where(User.username == username)
 
     return await _execute_select_command(statemant)
+
+
+async def _language_locale(username: str, lang: str):
+    statemant = update(User).where(User.username == username).values(locale=lang)
+    await _execute_insert_update_delete_command(statemant)
