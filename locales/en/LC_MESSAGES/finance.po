@@ -131,12 +131,16 @@ msgid "Выберите язык"
 msgstr "Choose language"
 
 #: src/telegram/telegram_api.py:83
-msgid "Изменено"
-msgstr "Changed"
+msgid "Ваш язык был изменен"
+msgstr "Your language has been changed"
+
+#: src/telegram/telegram_api.py:80
+msgid "Перезагрузить"
+msgstr "Reboot"
 
 #: src/telegram/telegram_api.py:73
-msgid "Изменение языка..."
-msgstr "Changing the language..."
+msgid "Изменения вступили в силу"
+msgstr "The changes have taken effect"
 
 #: src/telegram/messages.py:1
 msgid ""
@@ -152,11 +156,11 @@ msgid ""
 msgstr ""
 "Hello! 👋\n"
 "\n"
-"I'd like to welcome you to our financial accounting telegram bot 💸 \n."
+"I'd like to welcome you to our financial accounting telegram bot 💸 \n"
 "\n"
-"I'm here to help you take control of your finances 🤑, plan"
+"I'm here to help you take control of your finances 🤑, plan "
 "budget and reach your financial goals 📈. With my help, you'll be able to keep"
-"income and expense accounts, analyze your finances.\n"
+" income and expense accounts, analyze your finances.\n"
 "\n"
 "Let's work together! 😁"
 

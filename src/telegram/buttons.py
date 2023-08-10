@@ -3,31 +3,44 @@ from main import _
 
 
 async def get_button_manage_money():
-    BUTTON_INCOME = types.KeyboardButton(_('Доход'))
-    BUTTON_EXPENSE = types.KeyboardButton(_('Расход'))
+    button_income = types.KeyboardButton(_('Доход'))
+    button_expense = types.KeyboardButton(_('Расход'))
 
-    BUTTON_SHOW_CATEGORIES = types.KeyboardButton(_('Категории'))
-    BUTTON_ADD_CATEGORIES = types.KeyboardButton(_('Добавить категорию'))
-    BUTTON_DELETE_CATEGORIES = types.KeyboardButton(_('Удалить категорию'))
-    BUTTON_BALANCE = types.KeyboardButton(_('Баланс'))
+    button_show_categories = types.KeyboardButton(_('Категории'))
+    button_add_category = types.KeyboardButton(_('Добавить категорию'))
+    button_delete_category = types.KeyboardButton(_('Удалить категорию'))
+    button_balance = types.KeyboardButton(_('Баланс'))
 
-    BUTTON_MANAGE_MONEY = types.ReplyKeyboardMarkup(
-        keyboard=[[BUTTON_BALANCE],
-                  [BUTTON_INCOME, BUTTON_EXPENSE],
-                  [BUTTON_SHOW_CATEGORIES, BUTTON_ADD_CATEGORIES, BUTTON_DELETE_CATEGORIES]],
+    button_manager = types.ReplyKeyboardMarkup(
+        keyboard=[[button_balance],
+                  [button_income, button_expense],
+                  [button_show_categories, button_add_category, button_delete_category]],
         resize_keyboard=True,
         input_field_placeholder=_('Выберите действие')
     )
 
-    return BUTTON_MANAGE_MONEY
+    return button_manager
 
 
 async def get_button_cancel():
-    BUTTON_CANCEL = types.InlineKeyboardButton(_('Отмена'), callback_data='cancel')
+    button_cancel = types.InlineKeyboardButton(_('Отмена'), callback_data='cancel')
 
-    BUTTON_CANCEL = types.InlineKeyboardMarkup().add(BUTTON_CANCEL)
+    button_cancel = types.InlineKeyboardMarkup().add(button_cancel)
 
-    return BUTTON_CANCEL
+    return button_cancel
+
+
+async def get_reboot_button(lang: str):
+    button_reboot = types.KeyboardButton(_('Перезагрузить', locale=lang))
+
+    button_reboot = types.ReplyKeyboardMarkup(
+        keyboard=[[button_reboot]],
+        resize_keyboard=True,
+        input_field_placeholder=_('Перезагрузить', locale=lang)
+    )
+
+    return button_reboot
+
 
 RU_BUTTON = types.KeyboardButton('Русский')
 BE_BUTTON = types.KeyboardButton('Беларускі')

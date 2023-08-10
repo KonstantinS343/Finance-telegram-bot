@@ -130,11 +130,15 @@ msgid "Выберите язык"
 msgstr ""
 
 #: src/telegram/telegram_api.py:83
-msgid "Изменено"
+msgid "Ваш язык был изменен"
+msgstr ""
+
+#: src/telegram/telegram_api.py:80
+msgid "Перезагрузить"
 msgstr ""
 
 #: src/telegram/telegram_api.py:73
-msgid "Изменение языка..."
+msgid "Изменения вступили в силу"
 msgstr ""
 
 #: src/telegram/messages.py:1

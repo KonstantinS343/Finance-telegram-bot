@@ -132,12 +132,16 @@ msgid "Выберите язык"
 msgstr "Выберыце мову"
 
 #: src/telegram/telegram_api.py:83
-msgid "Изменено"
-msgstr "Зменены"
+msgid "Ваш язык был изменен"
+msgstr "Ваша мова была зменена"
+
+#: src/telegram/telegram_api.py:80
+msgid "Перезагрузить"
+msgstr "Перазагрузіць"
 
 #: src/telegram/telegram_api.py:73
-msgid "Изменение языка..."
-msgstr "Змена мовы..."
+msgid "Изменения вступили в силу"
+msgstr "Змены ўступілі ў сілу"
 
 #: src/telegram/messages.py:1
 msgid ""
