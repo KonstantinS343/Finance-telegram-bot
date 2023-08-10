@@ -3,10 +3,12 @@ from aiogram.dispatcher.filters.state import State, StatesGroup
 
 class IncomeState(StatesGroup):
     income_input = State()
+    category_input = State()
 
 
 class ExpenditureState(StatesGroup):
     expenditure_input = State()
+    category_input = State()
 
 
 class AddCategoryState(StatesGroup):

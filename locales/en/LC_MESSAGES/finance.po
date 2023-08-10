@@ -48,7 +48,7 @@ msgstr "Select action"
 
 #: src/telegram/buttons.py:26
 msgid "Отмена"
-msgstr "Cancellation"
+msgstr "Cancel"
 
 #: src/telegram/telegram_api.py:62
 msgid "ДОХОД:"
@@ -172,22 +172,12 @@ msgstr ""
 "You don't have a username 😅, our bot can't work that way 😰!\n"
 "Set it in Telegram settings."
 
-#: src/telegram/messages.py:4
-msgid ""
-"Неправильный ввод ✋! Помните 🫵, для добавления дохода/расхода необходимо "
-"☝️ придерживаться шаблона:\n"
-"СУММА КАТЕГОРИЯ(регистр не имеет значения)"
-msgstr ""
-"Incorrect entry ✋! Remember 🫵, to add income/expense you need to "
-"☝️ adhere to the template:\n"
-"AMOUNT CATEGORY(case is irrelevant)""
-
 #: src/telegram/messages.py:6
 msgid ""
 "Хмм 🧐, с вашими числами что-то не так. Проверьте их правильность 🫣.\n"
 "Напоминаю, что дробные числа пишутся через точку."
 msgstr ""
-"Hmm 🧐, there's something wrong with your numbers. Make sure they are correct 🫣.\n."
+"Hmm 🧐, there's something wrong with your numbers. Make sure they are correct 🫣.\n"
 "Just a reminder that fractional numbers are written with a period."
 
 #: venv/lib/python3.10/site-packages/click/_termui_impl.py:518
