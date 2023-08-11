@@ -1,4 +1,4 @@
-from sqlalchemy import String, TIMESTAMP, Column, ForeignKey, Float, Enum
+from sqlalchemy import String, TIMESTAMP, Column, ForeignKey, Float, Enum, Boolean
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.orm import DeclarativeBase, relationship
 
@@ -38,3 +38,4 @@ class Categories(Base):
 
     name = Column(String, nullable=False, unique=True, primary_key=True)
     user_id = Column(String, ForeignKey(User.username))
+    is_active = Column(Boolean, default=True, nullable=False)

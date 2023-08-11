@@ -12,7 +12,6 @@ from telegram.states import (
 from .messages import (
     START_MESSAGE,
     TELEGRAM_USERNAME_EXISTANCE_MESSAGE,
-    USER_INPUT_RULE,
     FLOAT_NUMBER_ERROR
 )
 from middleware.user import _add_new_user, _language_locale
@@ -27,14 +26,13 @@ from middleware.accounting import (
 from middleware.general_handlers import (
     check_telegram_username,
     check_user_existence,
-    validate_income_and_expenditure,
     category_does_not_exist,
-    category_already_exist
+    category_already_exist,
+    check_or_add_category
 )
 from exception import (
     UserAlreadyExists,
     UserNameNotDefined,
-    UnsupportedInput,
     CategoryDoesNotExist,
     CategoryAlreadyExist
 )
@@ -150,49 +148,65 @@ async def balance_show_handler(message: types.Message):
 @dp.message_handler(state=IncomeState.income_input)
 async def income_input_handler(message: types.Message, state: FSMContext):
     try:
-        await validate_income_and_expenditure(user_input=message.text, username=message.from_user.username)
-    except UnsupportedInput:
-        await message.answer(text=_(USER_INPUT_RULE), reply_markup=await get_button_manage_money())
+        total = float(message.text)
     except ValueError:
         await message.answer(text=_(FLOAT_NUMBER_ERROR), reply_markup=await get_button_manage_money())
     else:
-        quantity, category = message.text.split()
-        await _add_income(
-            username=message.from_user.username,
-            quantity=float(quantity),
-            category=category.lower()
-        )
-        await message.answer(text=_('Новая запись:'))
-        await message.answer(text=_('ДОХОД') + f' {message.text}', reply_markup=await get_button_manage_money())
-    finally:
-        await state.reset_state()
+        await IncomeState.category_input.set()
+        await message.answer(text=_('Введите название категории'), reply_markup=await get_button_cancel())
+        await state.update_data(total=total)
+
+
+@dp.message_handler(state=IncomeState.category_input)
+async def income_category_input_handler(message: types.Message, state: FSMContext):
+    data = await state.get_data()
+    total = data.get('total')
+    await check_or_add_category(category=message.text.lower(), username=message.from_user.username)
+    await _add_income(
+        username=message.from_user.username,
+        category=message.text,
+        quantity=total
+    )
+
+    await message.answer(text=_('Новая запись:'))
+    await message.answer(text=_('ДОХОД') + f' {total} {message.text}', reply_markup=await get_button_manage_money())
+
+    await state.reset_state()
 
 
 @dp.message_handler(state=ExpenditureState.expenditure_input)
 async def expenditure_input_handler(message: types.Message, state: FSMContext):
     try:
-        await validate_income_and_expenditure(user_input=message.text, username=message.from_user.username)
-    except UnsupportedInput:
-        await message.answer(text=_(USER_INPUT_RULE), reply_markup=await get_button_manage_money())
+        total = float(message.text)
     except ValueError:
         await message.answer(text=_(FLOAT_NUMBER_ERROR), reply_markup=await get_button_manage_money())
     else:
-        quantity, category = message.text.split()
-        await _add_expenditure(
-            username=message.from_user.username,
-            quantity=float(quantity),
-            category=category.lower()
-        )
-        await message.answer(text=_('Новая запись:'))
-        await message.answer(text=_('РАСХОД') + f' {message.text}', reply_markup=await get_button_manage_money())
-    finally:
-        await state.reset_data()
+        await ExpenditureState.category_input.set()
+        await message.answer(text=_('Введите название категории'), reply_markup=await get_button_cancel())
+        await state.update_data(total=total)
+
+
+@dp.message_handler(state=ExpenditureState.category_input)
+async def expenditure_category_input_handler(message: types.Message, state: FSMContext):
+    data = await state.get_data()
+    total = data.get('total')
+    await check_or_add_category(category=message.text.lower(), username=message.from_user.username)
+    await _add_expenditure(
+        username=message.from_user.username,
+        category=message.text,
+        quantity=total
+    )
+
+    await message.answer(text=_('Новая запись:'))
+    await message.answer(text=_('РАСХОД') + f' {total} {message.text}', reply_markup=await get_button_manage_money())
+
+    await state.reset_state()
 
 
 @dp.message_handler(state=AddCategoryState.add_categories_input)
 async def add_categories_input_handler(message: types.Message, state: FSMContext):
     try:
-        await category_already_exist(category=message.text.lower())
+        await category_already_exist(category=message.text.lower(), username=message.from_user.username)
     except CategoryAlreadyExist:
         await message.answer(text=_('Посмотрите внимательно, кажется такая категория уже существует!'), reply_markup=await get_button_manage_money())
     else:
@@ -205,7 +219,7 @@ async def add_categories_input_handler(message: types.Message, state: FSMContext
 @dp.message_handler(state=DeleteCategoryState.delete_categories_input)
 async def delete_categories_input_handler(message: types.Message, state: FSMContext):
     try:
-        await category_does_not_exist(category=message.text.lower())
+        await category_does_not_exist(category=message.text.lower(), username=message.from_user.username)
     except CategoryDoesNotExist:
         await message.answer(text=_('Мне кажется или такой категории нет?'), reply_markup=await get_button_manage_money())
     else:
