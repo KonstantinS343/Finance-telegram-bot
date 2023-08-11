@@ -53,6 +53,19 @@ async def get_report_buttons():
 
     return report_button
 
+
+async def get_email_remember_buttons():
+    yes_button = types.KeyboardButton(_('Да'))
+    no_button = types.KeyboardButton(_('Нет'))
+
+    email_remember_button = types.ReplyKeyboardMarkup(
+        keyboard=[[yes_button, no_button]],
+        resize_keyboard=True
+    )
+
+    return email_remember_button
+
+
 RU_BUTTON = types.KeyboardButton('Русский')
 BE_BUTTON = types.KeyboardButton('Беларускі')
 EN_BUTTON = types.KeyboardButton('English')
