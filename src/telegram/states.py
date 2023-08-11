@@ -17,3 +17,8 @@ class AddCategoryState(StatesGroup):
 
 class DeleteCategoryState(StatesGroup):
     delete_categories_input = State()
+
+
+class ReportState(StatesGroup):
+    send_place = State()
+    email = State()

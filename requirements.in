@@ -11,3 +11,7 @@ aioredis
 python-dotenv
 
 Babel
+
+XlsxWriter
+
+celery
