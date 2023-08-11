@@ -22,3 +22,8 @@ class DeleteCategoryState(StatesGroup):
 class ReportState(StatesGroup):
     send_place = State()
     email = State()
+    remember_email = State()
+
+
+class EmailState(StatesGroup):
+    reuse_email = State()

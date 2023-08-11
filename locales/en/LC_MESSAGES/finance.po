@@ -166,6 +166,26 @@ msgstr "Chat"
 msgid "Почта"
 msgstr "Email"
 
+#: src/telegram/buttons.py:58
+msgid "Да"
+msgstr "Yes"
+
+#: src/telegram/buttons.py:59
+msgid "Нет"
+msgstr "No"
+
+#: src/telegram/telegram_api.py:59
+msgid "Похоже такая почта уже существует! Выберите другую"
+msgstr "It looks like such a mail already exists! Choose another one"
+
+#: src/telegram/telegram_api.py:289
+msgid "Сохранить почту?"
+msgstr "Save email?"
+
+#: src/telegram/telegram_api.py:303
+msgid "У вас есть сохранненая почта, использовать её?"
+msgstr "Do you have saved email, use it?"
+
 #: src/telegram/messages.py:1
 msgid ""
 "Привет! 👋\n"

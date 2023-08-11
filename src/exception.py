@@ -24,3 +24,7 @@ class CategoryDoesNotExist(FinanceBotException):
 
 class CategoryAlreadyExist(FinanceBotException):
     pass
+
+
+class EmailAlreadyExist(FinanceBotException):
+    pass
