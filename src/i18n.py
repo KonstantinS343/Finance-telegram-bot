@@ -3,7 +3,7 @@ from pathlib import Path
 from aiogram.contrib.middlewares.i18n import I18nMiddleware
 from aiogram import types
 
-from middleware.user import _get_current_user
+from middleware.user import _get_user_lang
 
 
 I18N_DOMAIN = 'finance'
@@ -12,9 +12,9 @@ LOCALES_DIR = BASE_DIR / 'locales'
 
 
 async def get_lang(username: str):
-    user = await _get_current_user(username=username)
+    user = await _get_user_lang(username=username)
     if user:
-        return user[0].locale
+        return user
 
 
 class ACLMiddleware(I18nMiddleware):

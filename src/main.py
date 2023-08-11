@@ -8,9 +8,7 @@ from aiogram.contrib.middlewares.logging import LoggingMiddleware
 from aiogram.contrib.middlewares.i18n import I18nMiddleware
 from aiogram.utils import executor
 
-from redis.asyncio import Redis
-
-from config import TELEGRAM, REDIS_HOST, REDIS_PORT, DEBUG
+from config import TELEGRAM, DEBUG
 from i18n import setup_middleware
 
 
@@ -19,7 +17,6 @@ if DEBUG:
 else:
     logging.basicConfig(level=logging.INFO)
 
-redis = Redis(host=REDIS_HOST, port=REDIS_PORT, db='3')
 
 memory = MemoryStorage()
 bot = Bot(token=TELEGRAM)

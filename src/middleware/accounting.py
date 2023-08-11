@@ -3,14 +3,14 @@ from sqlalchemy import insert, select, update, and_
 from user.models import User
 from accounting.models import Categories, Accounting, OperationType
 from .service import _execute_insert_update_delete_command, _execute_select_command
-from main import redis
+from redis_manager import redis
 
 
 async def _add_new_category(category_name: str, username: str):
     statemant = select(Categories).where(and_(Categories.name == category_name))
 
     response = await _execute_select_command(statemant)
-    if not response:
+    if response is None:
         statemant = insert(Categories).values(name=category_name, user_id=username)
         await _execute_insert_update_delete_command(statemant)
     else:
@@ -32,7 +32,8 @@ async def _enable_category(username: str, category: str):
 
 async def _show_all_categories(username: str):
     response = await redis.get(name=username + 'categories')
-    if not response:
+
+    if response is None:
         statemant = select(Categories).where(and_(Categories.user_id == username, Categories.is_active == True))
         response = await _execute_select_command(statemant)
         response = ('\n').join(category.name.capitalize() for category in response)
@@ -45,7 +46,7 @@ async def _show_all_categories(username: str):
 
 async def _get_balance(username: str):
     response = await redis.get(name=username)
-    if not response:
+    if response is None:
         statemant = select(User).where(User.username == username)
         response = await _execute_select_command(statemant)
         response = response[0].balance
@@ -98,7 +99,7 @@ async def _delete_category(username: str, category: str):
 
 async def _get_category(category: str, username: str):
     response = await redis.get(name=username + 'categories')
-    if not response:
+    if response is None:
         return None
 
     if category.capitalize() not in response.decode("utf-8"):
