@@ -19,3 +19,12 @@ REDIS_HOST = os.environ.get('REDIS_HOST')
 REDIS_PORT = os.environ.get('REDIS_PORT')
 
 DEBUG = int(os.environ.get('DEBUG'))
+
+SMTP_HOST = os.environ.get('SMTP_HOST')
+SMTP_PORT = os.environ.get('SMTP_PORT')
+
+SMTP_USER = os.environ.get('SMTP_USER')
+SMTP_PASSWORD = os.environ.get('SMTP_PASSWORD')
+
+CELERY_HOST = os.environ.get('CELERY_HOST')
+CELERY_PORT = os.environ.get('CELERY_PORT')

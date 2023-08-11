@@ -1,13 +1,22 @@
 from aiogram import types
 from aiogram.dispatcher import FSMContext
 
-from telegram.buttons import get_button_manage_money, get_button_cancel, get_reboot_button, BUTTON_LANGUAGE
+import os
+
+from telegram.buttons import (
+    get_button_manage_money,
+    get_button_cancel,
+    get_reboot_button,
+    get_report_buttons,
+    BUTTON_LANGUAGE
+)
 from main import dp, bot, _
 from telegram.states import (
     IncomeState,
     ExpenditureState,
     AddCategoryState,
-    DeleteCategoryState
+    DeleteCategoryState,
+    ReportState
 )
 from .messages import (
     START_MESSAGE,
@@ -21,7 +30,8 @@ from middleware.accounting import (
     _get_balance,
     _add_income,
     _add_expenditure,
-    _delete_category
+    _delete_category,
+    _get_accounts
 )
 from middleware.general_handlers import (
     check_telegram_username,
@@ -36,6 +46,8 @@ from exception import (
     CategoryDoesNotExist,
     CategoryAlreadyExist
 )
+from report.table import create_report
+from report.email_send import email_report
 
 
 @dp.message_handler(commands=['start'])
@@ -51,6 +63,24 @@ async def start_bot(message: types.Message):
         await _add_new_user(username=message.from_user.username)
         await bot.send_sticker(chat_id=message.from_user.id, sticker='CAACAgIAAxkBAAIxgmR_WduWkzBmN4xogt4TSPMCiukoAAI2FgACcmugS6XaTV2HP2QpLwQ')
         await message.answer(text=_(START_MESSAGE), reply_markup=await get_button_manage_money())
+
+
+@dp.message_handler(commands=['report'])
+async def report(message: types.Message):
+    try:
+        await check_telegram_username(username=message.from_user.username)
+        await check_user_existence(username=message.from_user.username)
+    except UserNameNotDefined:
+        await message.answer(text=_(TELEGRAM_USERNAME_EXISTANCE_MESSAGE), reply_markup=await get_button_manage_money())
+    except UserAlreadyExists:
+        pass
+    else:
+        await _add_new_user(username=message.from_user.username)
+    finally:
+        accounts = await _get_accounts(username=message.from_user.username)
+        create_report.delay(username=message.from_user.username, accounts=accounts, func=_)
+        await ReportState.send_place.set()
+        await message.answer(text=_('Выберите место для отправки отчета'), reply_markup=await get_report_buttons())
 
 
 @dp.message_handler(commands=['language'])
@@ -227,3 +257,25 @@ async def delete_categories_input_handler(message: types.Message, state: FSMCont
         await message.answer(text=_('Категория успешно удалена!'), reply_markup=await get_button_manage_money())
     finally:
         await state.reset_state()
+
+
+@dp.message_handler(state=ReportState.send_place)
+async def report_send_place(message: types.Message, state: FSMContext):
+    user_input = message.text
+
+    if user_input == _('Почта'):
+        await ReportState.email.set()
+        await message.answer(text=_('В отчете отоборажается информация за последние 90 дней'), reply_markup=types.ReplyKeyboardRemove())
+        await message.reply(text=_('Введите вашу почту'), reply_markup=await get_button_cancel())
+    else:
+        document = open(f'{os.path.dirname(__file__)}/../report/reports/{message.from_user.username}_report.xlsx', 'rb')
+        await bot.send_document(chat_id=message.chat.id, document=document, reply_markup=await get_button_manage_money())
+        await state.reset_state()
+
+
+@dp.message_handler(state=ReportState.email)
+async def send_report(message: types.Message, state: FSMContext):
+    user_email = message.text
+    email_report.delay(username=message.from_user.username, user_email=user_email)
+    await message.reply(text=_('Проверьте свою почту'), reply_markup=await get_button_manage_money())
+    await state.reset_state()

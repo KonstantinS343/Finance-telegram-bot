@@ -42,6 +42,17 @@ async def get_reboot_button(lang: str):
     return button_reboot
 
 
+async def get_report_buttons():
+    chat_button = types.KeyboardButton(_('Чат'))
+    email_button = types.KeyboardButton(_('Почта'))
+
+    report_button = types.ReplyKeyboardMarkup(
+        keyboard=[[chat_button, email_button]],
+        resize_keyboard=True
+    )
+
+    return report_button
+
 RU_BUTTON = types.KeyboardButton('Русский')
 BE_BUTTON = types.KeyboardButton('Беларускі')
 EN_BUTTON = types.KeyboardButton('English')

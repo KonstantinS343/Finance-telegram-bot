@@ -1,4 +1,6 @@
-from sqlalchemy import insert, select, update, and_
+from sqlalchemy import insert, select, update, and_, extract
+
+from datetime import datetime, timedelta
 
 from user.models import User
 from accounting.models import Categories, Accounting, OperationType
@@ -106,3 +108,9 @@ async def _get_category(category: str, username: str):
         return None
 
     return category
+
+
+async def _get_accounts(username: str):
+    threshold_date = datetime.utcnow() - timedelta(days=90)
+    statement = select(Accounting).where(and_(Accounting.user_id == username, extract('epoch', Accounting.created_at) >= threshold_date.timestamp()))
+    return await _execute_select_command(statemant=statement)
