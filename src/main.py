@@ -19,7 +19,7 @@ else:
 
 
 memory = MemoryStorage()
-bot = Bot(token=TELEGRAM)
+bot = Bot(token=TELEGRAM, parse_mode='html')
 dp = Dispatcher(bot, storage=memory)
 
 

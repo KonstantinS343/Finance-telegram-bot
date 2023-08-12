@@ -37,15 +37,14 @@ async def categories_add_handler(message: types.Message):
 
 
 @dp.message_handler(lambda message: message.text == _('📤 Удалить категорию'))
-async def categories_delete_handler(message: types.Message):
+async def categories_delete_handler(message: types.Message, state: FSMContext):
 
     await DeleteCategoryState.delete_categories_input.set()
 
     await message.answer(text=_('УДАЛЕНИЕ КАТЕГОРИИ:'), reply_markup=types.ReplyKeyboardRemove())
     all_categories = await _show_all_categories(message.from_user.username)
-
-    await message.answer(text=_('Мои категории:\n') + all_categories)
-    await message.answer(text=_('Введите название категории'), reply_markup=await buttons.get_button_cancel())
+    await message.answer(text=_('Введите категорию'), reply_markup=await buttons.categories_buttons(categories=all_categories))
+    await state.update_data(username=message.from_user.username)
 
 
 @dp.message_handler(state=AddCategoryState.add_categories_input)
@@ -61,14 +60,19 @@ async def add_categories_input_handler(message: types.Message, state: FSMContext
         await state.reset_state()
 
 
-@dp.message_handler(state=DeleteCategoryState.delete_categories_input)
-async def delete_categories_input_handler(message: types.Message, state: FSMContext):
+@dp.callback_query_handler(lambda callback_query: callback_query.data.startswith('category'), state=DeleteCategoryState.delete_categories_input)
+async def delete_categories_input_handler(callback_query: types.CallbackQuery, state: FSMContext):
+    data = await state.get_data()
+    username = data.get('username')
+    text = callback_query.data.replace('category_', '').lower()
+
     try:
-        await category_does_not_exist(category=message.text.lower(), username=message.from_user.username)
+        await category_does_not_exist(category=text, username=username)
     except CategoryDoesNotExist:
-        await message.answer(text=_('Мне кажется или такой категории нет?'), reply_markup=await buttons.get_button_manage_money())
+        await callback_query.message.answer(text=_('Мне кажется или такой категории нет?'), reply_markup=await buttons.get_button_manage_money())
     else:
-        await _delete_category(username=message.from_user.username, category=message.text.lower())
-        await message.answer(text=_('Категория успешно удалена!'), reply_markup=await buttons.get_button_manage_money())
+        await _delete_category(username=username, category=text)
+        await callback_query.message.answer(text=_('Категория успешно удалена!'), reply_markup=await buttons.get_button_manage_money())
     finally:
         await state.reset_state()
+        await callback_query.answer()
