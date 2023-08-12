@@ -18,27 +18,27 @@ msgstr ""
 "Generated-By: Babel 2.9.1\n"
 
 #: src/telegram/buttons.py:6 src/telegram/telegram_api.py:58
-msgid "Доход"
+msgid "➕ Доход"
 msgstr ""
 
 #: src/telegram/buttons.py:7 src/telegram/telegram_api.py:66
-msgid "Расход"
+msgid "➖ Расход"
 msgstr ""
 
 #: src/telegram/buttons.py:9 src/telegram/telegram_api.py:82
-msgid "Категории"
+msgid "🗂 Категории"
 msgstr ""
 
 #: src/telegram/buttons.py:10 src/telegram/telegram_api.py:89
-msgid "Добавить категорию"
+msgid "📥 Добавить категорию"
 msgstr ""
 
 #: src/telegram/buttons.py:11 src/telegram/telegram_api.py:97
-msgid "Удалить категорию"
+msgid "📤 Удалить категорию"
 msgstr ""
 
 #: src/telegram/buttons.py:12 src/telegram/telegram_api.py:109
-msgid "Баланс"
+msgid "📊 Баланс"
 msgstr ""
 
 #: src/telegram/buttons.py:19
@@ -46,7 +46,7 @@ msgid "Выберите действие"
 msgstr ""
 
 #: src/telegram/buttons.py:26
-msgid "Отмена"
+msgid "⬅️ Отмена"
 msgstr ""
 
 #: src/telegram/telegram_api.py:62
@@ -134,7 +134,7 @@ msgid "Ваш язык был изменен"
 msgstr ""
 
 #: src/telegram/telegram_api.py:80
-msgid "Перезагрузить"
+msgid "🔄 Перезагрузить"
 msgstr ""
 
 #: src/telegram/telegram_api.py:73
@@ -158,19 +158,19 @@ msgid "Проверьте свою почту"
 msgstr ""
 
 #: src/telegram/buttons.py:46
-msgid "Чат"
+msgid "📌 Чат"
 msgstr ""
 
 #: src/telegram/buttons.py:47
-msgid "Почта"
+msgid "📧 Почта"
 msgstr ""
 
 #: src/telegram/buttons.py:58
-msgid "Да"
+msgid "⭕️ Да"
 msgstr ""
 
 #: src/telegram/buttons.py:59
-msgid "Нет"
+msgid "❌ Нет"
 msgstr ""
 
 #: src/telegram/telegram_api.py:59

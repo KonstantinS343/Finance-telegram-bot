@@ -29,7 +29,11 @@ i18n = setup_middleware(dp=dp)
 _ = i18n.gettext
 
 
-from telegram.telegram_api import *
+from telegram.category_handlers import *
+from telegram.common_handlers import *
+from telegram.language_handlers import *
+from telegram.main_handlers import *
+from telegram.report_handlers import *
 
 if __name__ == '__main__':
     executor.start_polling(dp)
