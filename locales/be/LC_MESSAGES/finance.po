@@ -20,36 +20,36 @@ msgstr ""
 "Generated-By: Babel 2.9.1\n"
 
 #: src/telegram/buttons.py:6 src/telegram/telegram_api.py:58
-msgid "Доход"
-msgstr "Даход"
+msgid "➕ Доход"
+msgstr "➕ Даход"
 
 #: src/telegram/buttons.py:7 src/telegram/telegram_api.py:66
-msgid "Расход"
-msgstr "Расход"
+msgid "➖ Расход"
+msgstr "➖ Расход"
 
 #: src/telegram/buttons.py:9 src/telegram/telegram_api.py:82
-msgid "Категории"
-msgstr "Катэгорыі"
+msgid "🗂 Категории"
+msgstr "🗂 Катэгорыі"
 
 #: src/telegram/buttons.py:10 src/telegram/telegram_api.py:89
-msgid "Добавить категорию"
-msgstr "Дадаць катэгорыю"
+msgid "📥 Добавить категорию"
+msgstr "📥 Дадаць катэгорыю"
 
 #: src/telegram/buttons.py:11 src/telegram/telegram_api.py:97
-msgid "Удалить категорию"
-msgstr "Выдаліць катэгорыю"
+msgid "📤 Удалить категорию"
+msgstr "📤 Выдаліць катэгорыю"
 
 #: src/telegram/buttons.py:12 src/telegram/telegram_api.py:109
-msgid "Баланс"
-msgstr "Баланс"
+msgid "📊 Баланс"
+msgstr "📊 Баланс"
 
 #: src/telegram/buttons.py:19
 msgid "Выберите действие"
 msgstr "Выберыце дзеянне"
 
 #: src/telegram/buttons.py:26
-msgid "Отмена"
-msgstr "Адмена"
+msgid "⬅️ Отмена"
+msgstr "⬅️ Адмена"
 
 #: src/telegram/telegram_api.py:62
 msgid "ДОХОД:"
@@ -136,8 +136,8 @@ msgid "Ваш язык был изменен"
 msgstr "Ваша мова была зменена"
 
 #: src/telegram/telegram_api.py:80
-msgid "Перезагрузить"
-msgstr "Перазагрузіць"
+msgid "🔄 Перезагрузить"
+msgstr "🔄 Перазагрузіць"
 
 #: src/telegram/telegram_api.py:73
 msgid "Изменения вступили в силу"
@@ -160,20 +160,20 @@ msgid "Проверьте свою почту"
 msgstr "Праверце сваю пошту"
 
 #: src/telegram/buttons.py:46
-msgid "Чат"
-msgstr "Чат"
+msgid "📌 Чат"
+msgstr "📌 Чат"
 
 #: src/telegram/buttons.py:47
-msgid "Почта"
-msgstr "Пошта"
+msgid "📧 Почта"
+msgstr "📧 Пошта"
 
 #: src/telegram/buttons.py:58
-msgid "Да"
-msgstr "Так"
+msgid "⭕️ Да"
+msgstr "⭕️ Так"
 
 #: src/telegram/buttons.py:59
-msgid "Нет"
-msgstr "Не"
+msgid "❌ Нет"
+msgstr "❌ Не"
 
 #: src/telegram/telegram_api.py:59
 msgid "Похоже такая почта уже существует! Выберите другую"
