@@ -66,6 +66,16 @@ async def get_email_remember_buttons():
     return email_remember_button
 
 
+async def categories_buttons(categories):
+    categories = categories.split('\n')
+    keyboard = types.InlineKeyboardMarkup()
+    for category in categories:
+        keyboard.add(types.InlineKeyboardButton(category, callback_data=f'category_{category}'))
+    keyboard.add(types.InlineKeyboardButton(_('⬅️ Отмена'), callback_data='cancel'))
+
+    return keyboard
+
+
 RU_BUTTON = types.KeyboardButton('🇷🇺 Русский')
 BE_BUTTON = types.KeyboardButton('🇧🇾 Беларускі')
 EN_BUTTON = types.KeyboardButton('🇺🇸 English')

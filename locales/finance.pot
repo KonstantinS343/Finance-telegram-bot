@@ -90,7 +90,7 @@ msgid "Мои категории:\n"
 msgstr ""
 
 #: src/telegram/telegram_api.py:106
-msgid "Введите название категории"
+msgid "Введите категорию"
 msgstr ""
 
 #: src/telegram/telegram_api.py:111

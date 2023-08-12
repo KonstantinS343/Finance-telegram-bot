@@ -12,7 +12,8 @@ async def _add_new_category(category_name: str, username: str):
     statemant = select(Categories).where(and_(Categories.name == category_name))
 
     response = await _execute_select_command(statemant)
-    if response is None:
+
+    if not response:
         statemant = insert(Categories).values(name=category_name, user_id=username)
         await _execute_insert_update_delete_command(statemant)
     else:

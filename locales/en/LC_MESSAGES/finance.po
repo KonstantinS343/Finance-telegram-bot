@@ -91,8 +91,8 @@ msgid "Мои категории:\n"
 msgstr "My categories:\n"
 
 #: src/telegram/telegram_api.py:106
-msgid "Введите название категории"
-msgstr "Enter the name of the category"
+msgid "Введите категорию"
+msgstr "Enter a category"
 
 #: src/telegram/telegram_api.py:111
 msgid "ВАШ ТЕКУЩИЙ БАЛАНС:"
