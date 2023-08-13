@@ -67,7 +67,7 @@ async def income_category_input_handler(callback_query: types.CallbackQuery, sta
         quantity=total
     )
 
-    await callback_query.message.answer(text=_('Новая запись:'))
+    await callback_query.message.edit_text(text=_('Новая запись:'))
     await callback_query.message.answer(text=_('ДОХОД') + f' <b>{total} {text}</b>', reply_markup=await buttons.get_button_manage_money())
 
     await state.reset_state()
@@ -100,7 +100,7 @@ async def expenditure_category_input_handler(callback_query: types.CallbackQuery
         quantity=total
     )
 
-    await callback_query.message.answer(text=_('Новая запись:'))
+    await callback_query.message.edit_text(text=_('Новая запись:'))
     await callback_query.message.answer(text=_('РАСХОД') + f' <b>{total} {text}</b>', reply_markup=await buttons.get_button_manage_money())
 
     await state.reset_state()

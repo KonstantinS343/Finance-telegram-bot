@@ -17,5 +17,6 @@ async def start_bot(message: types.Message):
 async def cancel_input(callback_query: types.CallbackQuery, state: FSMContext):
     await state.reset_state()
 
-    await callback_query.message.answer(text=_('Отменено'), reply_markup=await buttons.get_button_manage_money())
+    await callback_query.message.edit_text(text=_('Отменено'))
+    await callback_query.message.answer(text=_('Гланое меню'), reply_markup=await buttons.get_button_manage_money())
     await callback_query.answer()
