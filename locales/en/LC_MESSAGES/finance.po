@@ -174,6 +174,18 @@ msgstr "⭕️ Yes"
 msgid "❌ Нет"
 msgstr "❌ No"
 
+#: src/telegram/buttons.py:82
+msgid "🌐 Язык"
+msgstr "🌐 Language"
+
+#: src/telegram/buttons.py:83
+msgid "❓ Помощь"
+msgstr "❓ Help"
+
+#: src/telegram/telegram_api.py:5
+msgid "⚙️ Настройки"
+msgstr "⚙️ Settings"
+
 #: src/telegram/telegram_api.py:59
 msgid "Похоже такая почта уже существует! Выберите другую"
 msgstr "It looks like such a mail already exists! Choose another one"
@@ -223,6 +235,12 @@ msgid ""
 msgstr ""
 "Hmm 🧐, there's something wrong with your numbers. Make sure they are correct 🫣.\n"
 "Just a reminder that fractional numbers are written with a period."
+
+#: src/telegram/messages.py:8
+msgid ""
+"Бот для учета финансов \n\n 📌 Бот предоставляет удобные инструменты для учета ваших финансов. Основные команды представлены в виде кнопок внизу экрана, а также дополнительные команды можно найти в левом верхнем углу поля ввода.\n\nОписание команд:\nБаланс: Показывает ваш текущий баланс.\nДоход/Расход: Добавляет доход или расход. Вы вводите сумму (используя точку для десятичных чисел), затем выбираете категорию из вашего списка категорий. Просто следуйте инструкциям, и всё будет готово.\nДобавление/Удаление категории: Добавляет или удаляет категорию для классификации расходов или доходов.\nВсе категории: Выводит список всех доступных категорий.\nНастройки: Меняет язык и показывает это описание.\n\n❓ Как добавить расход/доход?\n❗️ Нажмите 'Доход' или 'Расход', в зависимости от того, что вы хотите добавить.\nВведите сумму, используя точку для десятичных чисел.\nВыберите соответствующую категорию из вашего списка категорий.\nГотово! Ваш расход или доход добавлен.\n\n❓ Генерация отчета:\n❗️ При вводе команды /report вам будет предложено отправить отчет в чат или на вашу почту. Также есть опция сохранения вашей почты для удобства.\n\nС помощью этого бота вы сможете легко отслеживать свои финансы и принимать более осознанные финансовые решения."
+msgstr ""
+"Bot for accounting of finances \n\n 📌 Bot provides convenient tools for accounting of your finances. The main commands are presented as buttons at the bottom of the screen, and additional commands can be found in the upper left corner of the input field.\n\nDescription of commands:\nBalance: Shows your current balance.\nThe passage/Expenditure: Adds income or expense. You enter the amount (using a dot for decimal numbers), then select a category from your list of categories. Just follow the instructions and you'll be done.\nAdd-on/Deleting a Category: Adds or removes a category to classify expenses or income.\nAll categories: Displays a list of all available categories.\nSettings: Changes the language and shows this description.\n\n ❓ How do I add expense/income?\n ❗️ Click 'Income' or 'Expense', depending on what you want to add.\nEnter the sum using a dot for decimal numbers.\nSelect the appropriate category from your list of categories.\nReady! Your expense or income has been added.\n\n ❓ Report generation:\n ❗️ When you enter the /report command, you will be prompted to send the report to the chat or to your email. There is also an option to save your mail for convenience.With this bot, you can easily track your finances and make more informed financial decisions."
 
 #: venv/lib/python3.10/site-packages/click/_termui_impl.py:518
 msgid "{editor}: Editing failed"

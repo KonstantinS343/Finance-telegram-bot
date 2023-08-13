@@ -27,3 +27,7 @@ class ReportState(StatesGroup):
 
 class EmailState(StatesGroup):
     reuse_email = State()
+
+
+class LanguageState(StatesGroup):
+    language = State()

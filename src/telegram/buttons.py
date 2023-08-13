@@ -2,21 +2,23 @@ from aiogram import types
 from main import _
 
 
-async def get_button_manage_money():
-    button_income = types.KeyboardButton(_('➕ Доход'))
-    button_expense = types.KeyboardButton(_('➖ Расход'))
+async def get_button_manage_money(lang=None):
+    button_income = types.KeyboardButton(_('➕ Доход', locale=lang))
+    button_expense = types.KeyboardButton(_('➖ Расход', locale=lang))
 
-    button_show_categories = types.KeyboardButton(_('🗂 Категории'))
-    button_add_category = types.KeyboardButton(_('📥 Добавить категорию'))
-    button_delete_category = types.KeyboardButton(_('📤 Удалить категорию'))
-    button_balance = types.KeyboardButton(_('📊 Баланс'))
+    button_show_categories = types.KeyboardButton(_('🗂 Категории', locale=lang))
+    button_add_category = types.KeyboardButton(_('📥 Добавить категорию', locale=lang))
+    button_delete_category = types.KeyboardButton(_('📤 Удалить категорию', locale=lang))
+    button_balance = types.KeyboardButton(_('📊 Баланс', locale=lang))
+    button_settings = types.KeyboardButton(_('⚙️ Настройки', locale=lang))
 
     button_manager = types.ReplyKeyboardMarkup(
         keyboard=[[button_balance],
                   [button_income, button_expense],
-                  [button_show_categories, button_add_category, button_delete_category]],
+                  [button_show_categories, button_add_category, button_delete_category],
+                  [button_settings]],
         resize_keyboard=True,
-        input_field_placeholder=_('Выберите действие')
+        input_field_placeholder=_('Выберите действие', locale=lang)
     )
 
     return button_manager
@@ -28,18 +30,6 @@ async def get_button_cancel():
     button_cancel = types.InlineKeyboardMarkup().add(button_cancel)
 
     return button_cancel
-
-
-async def get_reboot_button(lang: str):
-    button_reboot = types.KeyboardButton(_('🔄 Перезагрузить', locale=lang))
-
-    button_reboot = types.ReplyKeyboardMarkup(
-        keyboard=[[button_reboot]],
-        resize_keyboard=True,
-        input_field_placeholder=_('Перезагрузить', locale=lang)
-    )
-
-    return button_reboot
 
 
 async def get_report_buttons():
@@ -76,11 +66,17 @@ async def categories_buttons(categories):
     return keyboard
 
 
-RU_BUTTON = types.KeyboardButton('🇷🇺 Русский')
-BE_BUTTON = types.KeyboardButton('🇧🇾 Беларускі')
-EN_BUTTON = types.KeyboardButton('🇺🇸 English')
+async def settings_button():
+    button_language = types.InlineKeyboardButton(_('🌐 Язык'), callback_data='language')
+    help_button = types.InlineKeyboardButton(_('❓ Помощь'), callback_data='help')
 
-BUTTON_LANGUAGE = types.ReplyKeyboardMarkup(
-    keyboard=[[RU_BUTTON, BE_BUTTON, EN_BUTTON]],
-    resize_keyboard=True
-)
+    button_cancel = types.InlineKeyboardMarkup().add(button_language).add(help_button)
+
+    return button_cancel
+
+
+RU_BUTTON = types.InlineKeyboardButton('🇷🇺 Русский', callback_data='ru')
+BE_BUTTON = types.InlineKeyboardButton('🇧🇾 Беларускі', callback_data='be')
+EN_BUTTON = types.InlineKeyboardButton('🇺🇸 English', callback_data='en')
+
+BUTTON_LANGUAGE = types.InlineKeyboardMarkup().add(RU_BUTTON).add(BE_BUTTON).add(EN_BUTTON)

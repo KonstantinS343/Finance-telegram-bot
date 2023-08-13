@@ -9,7 +9,7 @@ from telegram.states import (
     ReportState,
     EmailState
 )
-from middleware.user import _insert_user_email, _get_users_email
+from middleware.user import _insert_user_email, _get_users_email, _get_user_lang
 from middleware.accounting import _get_accounts
 from exception import EmailAlreadyExist
 from report.table import create_report
@@ -21,7 +21,8 @@ from .utils import auth
 @auth
 async def report(message: types.Message):
     accounts = await _get_accounts(username=message.from_user.username)
-    create_report.delay(username=message.from_user.username, accounts=accounts)
+    lang = await _get_user_lang(username=message.from_user.username)
+    create_report.delay(username=message.from_user.username, accounts=accounts, lang=lang)
     await ReportState.send_place.set()
     await message.answer(text=_('Выберите место для отправки отчета'), reply_markup=await buttons.get_report_buttons())
 
