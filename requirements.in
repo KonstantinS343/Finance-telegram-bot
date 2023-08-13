@@ -15,3 +15,5 @@ Babel
 XlsxWriter
 
 celery
+
+matplotlib

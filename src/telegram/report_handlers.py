@@ -9,10 +9,11 @@ from telegram.states import (
     ReportState,
     EmailState
 )
-from middleware.user import _insert_user_email, _get_users_email
+from middleware.user import _insert_user_email, _get_users_email, _get_user_lang
 from middleware.accounting import _get_accounts
 from exception import EmailAlreadyExist
 from report.table import create_report
+from report.diagram import create_diagram
 from report.email_send import email_report
 from .utils import auth
 
@@ -21,7 +22,9 @@ from .utils import auth
 @auth
 async def report(message: types.Message):
     accounts = await _get_accounts(username=message.from_user.username)
-    create_report.delay(username=message.from_user.username, accounts=accounts)
+    lang = await _get_user_lang(username=message.from_user.username)
+    create_report.delay(username=message.from_user.username, accounts=accounts, lang=lang)
+    create_diagram.delay(username=message.from_user.username, accounts=accounts)
     await ReportState.send_place.set()
     await message.answer(text=_('Выберите место для отправки отчета'), reply_markup=await buttons.get_report_buttons())
 
@@ -39,10 +42,18 @@ async def report_send_place(message: types.Message, state: FSMContext):
         else:
             await ReportState.email.set()
             await message.answer(text=_('Введите вашу почту'), reply_markup=await buttons.get_button_cancel())
-    else:
+    elif user_input == _('📌 Чат'):
         document = open(f'{os.path.dirname(__file__)}/../report/reports/{message.from_user.username}_report.xlsx', 'rb')
         await bot.send_document(chat_id=message.chat.id, document=document, reply_markup=await buttons.get_button_manage_money())
+        await message.answer(text=_('РАСХОД'), reply_markup=await buttons.get_button_manage_money())
+        await bot.send_photo(chat_id=message.chat.id,
+                             photo=types.InputFile(f'{os.path.dirname(__file__)}/../report/diagrams/{message.from_user.username}_expenditure_diagram.png'))
+        await message.answer(text=_('ДОХОД'), reply_markup=await buttons.get_button_manage_money())
+        await bot.send_photo(chat_id=message.chat.id,
+                             photo=types.InputFile(f'{os.path.dirname(__file__)}/../report/diagrams/{message.from_user.username}_income_diagram.png'))
         await state.reset_state()
+    else:
+        await message.answer(text=_('Отменено'), reply_markup=await buttons.get_button_manage_money())
 
 
 @dp.message_handler(state=ReportState.email)
@@ -66,7 +77,7 @@ async def remember_email(message: types.Message, state: FSMContext):
         except EmailAlreadyExist:
             await message.answer(text=_('Похоже такая почта уже существует! Выберите другую'), reply_markup=await buttons.get_button_manage_money())
 
-    await message.answer(text=_('Проверьте свою почту'), reply_markup=await buttons.get_button_manage_money())
+        await message.answer(text=_('Проверьте свою почту'), reply_markup=await buttons.get_button_manage_money())
 
     await state.reset_state()
 
