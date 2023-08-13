@@ -4,7 +4,8 @@ from config import CELERY_HOST, CELERY_PORT
 
 
 celery = Celery('executor', broker=f'redis://{CELERY_HOST}:{CELERY_PORT}', include=['report.table',
-                                                                                    'report.email_send'])
+                                                                                    'report.email_send',
+                                                                                    'report.diagram'])
 
 
 celery.conf.task_serializer = 'pickle'
