@@ -1,11 +1,13 @@
-import os
 import matplotlib.pyplot as plt
+
+import os
 from typing import List
 from dataclasses import dataclass
+from collections import defaultdict
 
 from celery_app import celery
 from accounting.models import OperationType
-from collections import defaultdict
+from .headers import INCOME, EXPENDITURE
 
 
 @dataclass
@@ -15,7 +17,7 @@ class MoneyMovement():
 
 
 @celery.task
-def create_diagram(username: str, accounts):
+def create_diagram(username: str, accounts, lang):
     income_data, expenditure_data = prepare_data(accounts=accounts)
 
     income_categories = [i for i in income_data.keys()]
@@ -31,6 +33,10 @@ def create_diagram(username: str, accounts):
     drow_diagram(path=f'{os.path.dirname(__file__)}/diagrams/{username}_expenditure_diagram.png',
                  values=expenditure_values,
                  categories=expenditure_categories)
+
+    drow_diagram(path=f'{os.path.dirname(__file__)}/diagrams/{username}_general_diagram.png',
+                 values=[sum(income_values), sum(expenditure_values)],
+                 categories=[INCOME[lang], EXPENDITURE[lang]])
 
 
 def drow_diagram(path: str, values: List[float], categories: List[str]):
@@ -50,7 +56,5 @@ def prepare_data(accounts):
             income_data[i.categories].quantity += i.quantity
         else:
             expenditure_data[i.categories].quantity += i.quantity
-    print(income_data)
-    print(expenditure_data)
 
     return income_data, expenditure_data
