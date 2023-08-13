@@ -11,12 +11,13 @@ async def get_button_manage_money(lang=None):
     button_delete_category = types.KeyboardButton(_('📤 Удалить категорию', locale=lang))
     button_balance = types.KeyboardButton(_('📊 Баланс', locale=lang))
     button_settings = types.KeyboardButton(_('⚙️ Настройки', locale=lang))
+    last_button = types.KeyboardButton(_('🕒 Последние 10 операций'))
 
     button_manager = types.ReplyKeyboardMarkup(
         keyboard=[[button_balance],
                   [button_income, button_expense],
                   [button_show_categories, button_add_category, button_delete_category],
-                  [button_settings]],
+                  [button_settings, last_button]],
         resize_keyboard=True,
         input_field_placeholder=_('Выберите действие', locale=lang)
     )

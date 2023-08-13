@@ -187,6 +187,14 @@ msgstr ""
 msgid "⚙️ Настройки"
 msgstr ""
 
+#: src/telegram/telegram_api.py:5
+msgid "🕒 Последние 10 операций"
+msgstr ""
+
+#: src/telegram/telegram_api.py:5
+msgid "Гланое меню"
+msgstr ""
+
 #: src/telegram/telegram_api.py:59
 msgid "Похоже такая почта уже существует! Выберите другую"
 msgstr ""

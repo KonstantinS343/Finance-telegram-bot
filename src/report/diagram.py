@@ -1,4 +1,5 @@
 import matplotlib.pyplot as plt
+import matplotlib
 
 import os
 from typing import List
@@ -8,6 +9,8 @@ from collections import defaultdict
 from celery_app import celery
 from accounting.models import OperationType
 from .headers import INCOME, EXPENDITURE
+
+matplotlib.use('agg')
 
 
 @dataclass
@@ -40,6 +43,9 @@ def create_diagram(username: str, accounts, lang):
 
 
 def drow_diagram(path: str, values: List[float], categories: List[str]):
+    if not values or (values[0] == 0 and values[1] == 0):
+        plt.savefig(path)
+        return
     plt.pie(values, labels=categories, autopct='%1.1f%%', startangle=90)
     plt.axis('equal')
 

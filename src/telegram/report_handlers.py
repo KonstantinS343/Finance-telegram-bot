@@ -97,3 +97,13 @@ async def reuse_email(message: types.Message, state: FSMContext):
     else:
         await ReportState.email.set()
         await message.answer(text=_('Введите вашу почту'), reply_markup=await buttons.get_button_cancel())
+
+
+@dp.message_handler(lambda message: message.text == _('🕒 Последние 10 операций'))
+async def last_ten_operations(message: types.Message):
+    accounts = await _get_accounts(username=message.from_user.username)
+    msg = str()
+    for i in accounts:
+        msg += '\n<b>📌' + i.created_at.strftime("%d/%m/%Y, %H:%M:%S") + '  ' + str(i.quantity) + ' => ' + i.categories + '</b>\n'
+
+    await message.answer(text=_('🕒 Последние 10 операций') + ':\n' + msg, reply_markup=await buttons.get_button_manage_money())

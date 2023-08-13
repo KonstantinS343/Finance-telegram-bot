@@ -24,8 +24,14 @@ from exception import (
 @dp.message_handler(lambda message: message.text == _('🗂 Категории'))
 async def categories_show_handler(message: types.Message):
     all_categories = await _show_all_categories(message.from_user.username)
+    all_categories = all_categories.split('\n')
+    if all_categories:
+        all_categories = all_categories[1::]
+    msg = str()
+    for i in all_categories:
+        msg += '\n<b>📌 ' + i + '\n</b>'
 
-    await message.answer(text=_('Вот список текущих категорий:\n') + all_categories, reply_markup=await buttons.get_button_manage_money())
+    await message.answer(text=_('Вот список текущих категорий:\n') + msg, reply_markup=await buttons.get_button_manage_money())
 
 
 @dp.message_handler(lambda message: message.text == _('📥 Добавить категорию'))
@@ -41,7 +47,6 @@ async def categories_delete_handler(message: types.Message, state: FSMContext):
 
     await DeleteCategoryState.delete_categories_input.set()
 
-    await message.answer(text=_('УДАЛЕНИЕ КАТЕГОРИИ:'), reply_markup=types.ReplyKeyboardRemove())
     all_categories = await _show_all_categories(message.from_user.username)
     await message.answer(text=_('Введите категорию'), reply_markup=await buttons.categories_buttons(categories=all_categories))
     await state.update_data(username=message.from_user.username)
@@ -72,7 +77,7 @@ async def delete_categories_input_handler(callback_query: types.CallbackQuery, s
         await callback_query.message.answer(text=_('Мне кажется или такой категории нет?'), reply_markup=await buttons.get_button_manage_money())
     else:
         await _delete_category(username=username, category=text)
-        await callback_query.message.answer(text=_('Категория успешно удалена!'), reply_markup=await buttons.get_button_manage_money())
+        await callback_query.message.edit_text(text=_('Категория успешно удалена!'))
     finally:
         await state.reset_state()
         await callback_query.answer()

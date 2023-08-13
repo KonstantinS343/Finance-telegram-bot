@@ -39,7 +39,7 @@ async def _show_all_categories(username: str):
     if response is None:
         statemant = select(Categories).where(and_(Categories.user_id == username, Categories.is_active == True))
         response = await _execute_select_command(statemant)
-        response = ('\n').join(category.name.capitalize() for category in response)
+        response = '\n' + ('\n').join(category.name.capitalize() for category in response)
 
         await redis.set(name=username + 'categories', value=response)
         return response
