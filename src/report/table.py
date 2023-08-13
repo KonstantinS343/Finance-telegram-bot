@@ -4,13 +4,7 @@ import os
 
 from celery_app import celery
 from accounting.models import OperationType
-
-CATEGORY = {'ru': 'Категория', 'en': 'Category', 'be': 'Катэгорыя'}
-DATE = {'ru': 'Дата', 'en': 'Date', 'be': 'Дата'}
-QUANTITY = {'ru': 'Количество', 'en': 'Quantity', 'be': 'Колькасць'}
-OPERATION = {'ru': 'Операция', 'en': 'Operation', 'be': 'Аперацыя'}
-INCOME = {'ru': 'Доход', 'en': 'Income', 'be': 'Даход'}
-EXPENDITURE = {'ru': 'Расход', 'en': 'Expenditure', 'be': 'Расход'}
+from .headers import CATEGORY, DATE, QUANTITY, OPERATION, INCOME, EXPENDITURE
 
 
 @celery.task
@@ -21,8 +15,8 @@ def create_report(username: str, accounts, lang):
     workbook = xlsxwriter.Workbook(f'{os.path.dirname(__file__)}/reports/{username}_report.xlsx')
     worksheet = workbook.add_worksheet('Sheet')
     cell_format = workbook.add_format({
-        'align': 'center',     # Выравнивание по центру по горизонтали
-        'valign': 'vcenter'    # Выравнивание по центру по вертикали
+        'align': 'center',
+        'valign': 'vcenter'
     })
     worksheet.set_column(1, 4, 25)
 
