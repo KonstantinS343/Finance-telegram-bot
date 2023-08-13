@@ -77,7 +77,7 @@ async def remember_email(message: types.Message, state: FSMContext):
         except EmailAlreadyExist:
             await message.answer(text=_('Похоже такая почта уже существует! Выберите другую'), reply_markup=await buttons.get_button_manage_money())
 
-    await message.answer(text=_('Проверьте свою почту'), reply_markup=await buttons.get_button_manage_money())
+        await message.answer(text=_('Проверьте свою почту'), reply_markup=await buttons.get_button_manage_money())
 
     await state.reset_state()
 
