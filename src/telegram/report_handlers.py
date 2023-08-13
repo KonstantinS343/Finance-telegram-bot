@@ -9,38 +9,21 @@ from telegram.states import (
     ReportState,
     EmailState
 )
-from .messages import TELEGRAM_USERNAME_EXISTANCE_MESSAGE
-from middleware.user import _add_new_user, _insert_user_email, _get_users_email
+from middleware.user import _insert_user_email, _get_users_email
 from middleware.accounting import _get_accounts
-from middleware.general_handlers import (
-    check_telegram_username,
-    check_user_existence,
-)
-from exception import (
-    UserAlreadyExists,
-    UserNameNotDefined,
-    EmailAlreadyExist
-)
+from exception import EmailAlreadyExist
 from report.table import create_report
 from report.email_send import email_report
+from .utils import auth
 
 
 @dp.message_handler(commands=['report'])
+@auth
 async def report(message: types.Message):
-    try:
-        await check_telegram_username(username=message.from_user.username)
-        await check_user_existence(username=message.from_user.username)
-    except UserNameNotDefined:
-        await message.answer(text=_(TELEGRAM_USERNAME_EXISTANCE_MESSAGE), reply_markup=await buttons.get_button_manage_money())
-    except UserAlreadyExists:
-        pass
-    else:
-        await _add_new_user(username=message.from_user.username)
-    finally:
-        accounts = await _get_accounts(username=message.from_user.username)
-        create_report.delay(username=message.from_user.username, accounts=accounts)
-        await ReportState.send_place.set()
-        await message.answer(text=_('Выберите место для отправки отчета'), reply_markup=await buttons.get_report_buttons())
+    accounts = await _get_accounts(username=message.from_user.username)
+    create_report.delay(username=message.from_user.username, accounts=accounts)
+    await ReportState.send_place.set()
+    await message.answer(text=_('Выберите место для отправки отчета'), reply_markup=await buttons.get_report_buttons())
 
 
 @dp.message_handler(state=ReportState.send_place)
