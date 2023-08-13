@@ -25,8 +25,7 @@ from exception import (
 async def categories_show_handler(message: types.Message):
     all_categories = await _show_all_categories(message.from_user.username)
     all_categories = all_categories.split('\n')
-    if all_categories:
-        all_categories = all_categories[1::]
+    all_categories = [i for i in all_categories if i != '']
     msg = str()
     for i in all_categories:
         msg += '\n<b>📌 ' + i + '\n</b>'
