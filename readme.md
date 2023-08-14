@@ -96,7 +96,7 @@ cd ..
 python src/main.py
 ```
 
-In the `src' folder in terminal 2:
+In the `src` folder in terminal 2:
 
 ```sh
 celery -A celery_app:celery worker --loglevel=INFO 
