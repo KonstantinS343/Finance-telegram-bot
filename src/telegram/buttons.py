@@ -76,6 +76,16 @@ async def settings_button():
     return button_cancel
 
 
+async def time_interval_buttons():
+    day_button = types.InlineKeyboardButton(_('День'), callback_data='time_1')
+    month_button = types.InlineKeyboardButton(_('Месяц'), callback_data='time_30')
+    year_button = types.InlineKeyboardButton(_('Год'), callback_data='time_365')
+
+    time_button = types.InlineKeyboardMarkup().add(day_button, month_button, year_button)
+
+    return time_button
+
+
 RU_BUTTON = types.InlineKeyboardButton('🇷🇺 Русский', callback_data='ru')
 BE_BUTTON = types.InlineKeyboardButton('🇧🇾 Беларускі', callback_data='be')
 EN_BUTTON = types.InlineKeyboardButton('🇺🇸 English', callback_data='en')

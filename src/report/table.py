@@ -9,6 +9,8 @@ from .headers import CATEGORY, DATE, QUANTITY, OPERATION, INCOME, EXPENDITURE
 
 @celery.task
 def create_report(username: str, accounts, lang):
+    if not lang:
+        lang = 'ru'
 
     data = prepare_data(accounts=accounts, lang=lang)
 

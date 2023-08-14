@@ -21,6 +21,8 @@ class MoneyMovement():
 
 @celery.task
 def create_diagram(username: str, accounts, lang):
+    if not lang:
+        lang = 'ru'
     income_data, expenditure_data = prepare_data(accounts=accounts)
 
     income_categories = [i for i in income_data.keys()]

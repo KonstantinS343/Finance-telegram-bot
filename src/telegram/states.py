@@ -21,6 +21,7 @@ class DeleteCategoryState(StatesGroup):
 
 class ReportState(StatesGroup):
     send_place = State()
+    time_interval = State()
     email = State()
     remember_email = State()
 

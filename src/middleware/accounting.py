@@ -1,4 +1,4 @@
-from sqlalchemy import insert, select, update, and_, extract
+from sqlalchemy import insert, select, update, and_, extract, desc
 
 from datetime import datetime, timedelta
 
@@ -111,7 +111,10 @@ async def _get_category(category: str, username: str):
     return category
 
 
-async def _get_accounts(username: str):
-    threshold_date = datetime.utcnow() - timedelta(days=90)
-    statement = select(Accounting).where(and_(Accounting.user_id == username, extract('epoch', Accounting.created_at) >= threshold_date.timestamp()))
+async def _get_accounts(username: str, time: str):
+    if time == 'last':
+        statement = select(Accounting).order_by(desc(Accounting.created_at)).limit(10)
+    else:
+        threshold_date = datetime.utcnow() - timedelta(days=int(time))
+        statement = select(Accounting).where(and_(Accounting.user_id == username, extract('epoch', Accounting.created_at) >= threshold_date.timestamp()))
     return await _execute_select_command(statemant=statement)
