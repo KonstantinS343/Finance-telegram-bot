@@ -19,19 +19,19 @@ Manage your finances with ease with the help of the telegram bot **Finance Contr
 ## How to get started
 
 1. **Launching the bot**: After clicking on the `start` button, we are   greeted with a greeting and a button panel appears to control the bot.
-![Start](https://github.com/KonstantinS343/Finance-telegram-bot/tree/main/images/start.gif)
+![Start](https://github.com/KonstantinS343/Finance-telegram-bot/blob/main/images/start.gif)
 
 2. **Create categories:**  Use the appropriate buttons to create/delete personalized categories.
-![Categories](https://github.com/KonstantinS343/Finance-telegram-bot/tree/main/images/categoris.gif)
+![Categories](https://github.com/KonstantinS343/Finance-telegram-bot/blob/main/images/categoris.gif)
 
 3. **Add operations:** Send the bot information about your income 💰 and expenses 💸 using the appropriate buttons. Specify the amount and select the appropriate category.
-![Money](https://github.com/KonstantinS343/Finance-telegram-bot/tree/main/images/money.gif)
+![Money](https://github.com/KonstantinS343/Finance-telegram-bot/blob/main/images/money.gif)
 
 4. **Change the language:** Select a convenient interface language using the settings button (there is also reference information there). Now you can interact with the bot in your preferred language.
-![Settings](https://github.com/KonstantinS343/Finance-telegram-bot/tree/main/images/settings.gif)
+![Settings](https://github.com/KonstantinS343/Finance-telegram-bot/blob/main/images/settings.gif)
 
 5. **Get reports:** Use the `/report` command to get reports on your finances. View data in the form of tables 📊 and pie charts 📈 to better manage your budget.
-![Report](https://github.com/KonstantinS343/Finance-telegram-bot/tree/main/images/report.gif)
+![Report](https://github.com/KonstantinS343/Finance-telegram-bot/blob/main/images/report.gif)
 
 ## Customization
 
