@@ -15,18 +15,27 @@ from exception import EmailAlreadyExist
 from report.table import create_report
 from report.diagram import create_diagram
 from report.email_send import email_report
-from .utils import auth
 
 
 @dp.message_handler(commands=['report'])
-@auth
-async def report(message: types.Message):
-    accounts = await _get_accounts(username=message.from_user.username)
-    lang = await _get_user_lang(username=message.from_user.username)
-    create_report.delay(username=message.from_user.username, accounts=accounts, lang=lang)
-    create_diagram.delay(username=message.from_user.username, accounts=accounts, lang=lang)
+async def run_report(message: types.Message, state: FSMContext):
+    await ReportState.time_interval.set()
+    await message.answer(text=_('Выберите промежуток времени'), reply_markup=await buttons.time_interval_buttons())
+    await state.update_data(username=message.from_user.username)
+
+
+@dp.callback_query_handler(lambda callback_query: callback_query.data.startswith('time'), state=ReportState.time_interval)
+async def report(callback_query: types.CallbackQuery, state: FSMContext):
+    data = await state.get_data()
+    username = data.get('username')
+    text = callback_query.data.replace('time_', '').lower()
+    accounts = await _get_accounts(username=username, time=text)
+    lang = await _get_user_lang(username=username)
+    create_report.delay(username=username, accounts=accounts, lang=lang)
+    create_diagram.delay(username=username, accounts=accounts, lang=lang)
     await ReportState.send_place.set()
-    await message.answer(text=_('Выберите место для отправки отчета'), reply_markup=await buttons.get_report_buttons())
+    await callback_query.message.edit_text(text=_('Отчет сформирован!'))
+    await callback_query.message.answer(text=_('Выберите место для отправки отчета'), reply_markup=await buttons.get_report_buttons())
 
 
 @dp.message_handler(state=ReportState.send_place)
@@ -34,7 +43,6 @@ async def report_send_place(message: types.Message, state: FSMContext):
     user_input = message.text
 
     if user_input == _('📧 Почта'):
-        await message.answer(text=_('В отчете отоборажается информация за последние 90 дней'), reply_markup=types.ReplyKeyboardRemove())
         response = await _get_users_email(username=message.from_user.username)
         if response:
             await EmailState.reuse_email.set()
@@ -101,7 +109,7 @@ async def reuse_email(message: types.Message, state: FSMContext):
 
 @dp.message_handler(lambda message: message.text == _('🕒 Последние 10 операций'))
 async def last_ten_operations(message: types.Message):
-    accounts = await _get_accounts(username=message.from_user.username)
+    accounts = await _get_accounts(username=message.from_user.username, time='last')
     msg = str()
     for i in accounts:
         msg += '\n<b>📌' + i.created_at.strftime("%d/%m/%Y, %H:%M:%S") + '  ' + str(i.quantity) + ' => ' + i.categories + '</b>\n'

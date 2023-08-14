@@ -21,7 +21,7 @@ async def income_handler(message: types.Message):
     await IncomeState.income_input.set()
 
     await message.answer(text=_('ДОХОД:'), reply_markup=types.ReplyKeyboardRemove())
-    await message.answer(text=_('Введите ваш доход'), reply_markup=await buttons.get_button_cancel())
+    await message.answer(text=_('Введите ваш доход'))
 
 
 @dp.message_handler(lambda message: message.text == _('➖ Расход'))
@@ -29,7 +29,7 @@ async def expenditure_handler(message: types.Message):
     await ExpenditureState.expenditure_input.set()
 
     await message.answer(text=_('РАСХОД:'), reply_markup=types.ReplyKeyboardRemove())
-    await message.answer(text=_('Введите ваш расход'), reply_markup=await buttons.get_button_cancel())
+    await message.answer(text=_('Введите ваш расход'))
 
 
 @dp.message_handler(lambda message: message.text == _('📊 Баланс'))

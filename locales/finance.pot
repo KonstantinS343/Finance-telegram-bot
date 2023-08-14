@@ -193,6 +193,26 @@ msgstr ""
 msgid "Гланое меню"
 msgstr ""
 
+#: src/telegram/telegram_api.py:5
+msgid "Отчет сформирован!"
+msgstr ""
+
+#: src/telegram/telegram_api.py:5
+msgid "Выберите промежуток времени"
+msgstr ""
+
+#: src/telegram/buttons.py:83
+msgid "День"
+msgstr ""
+
+#: src/telegram/buttons.py:83
+msgid "Месяц"
+msgstr ""
+
+#: src/telegram/buttons.py:83
+msgid "Год"
+msgstr ""
+
 #: src/telegram/telegram_api.py:59
 msgid "Похоже такая почта уже существует! Выберите другую"
 msgstr ""

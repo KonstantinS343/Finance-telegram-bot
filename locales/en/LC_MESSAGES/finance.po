@@ -194,6 +194,26 @@ msgstr "🕒 Last 10 operations"
 msgid "Гланое меню"
 msgstr "Main menu"
 
+#: src/telegram/telegram_api.py:5
+msgid "Отчет сформирован!"
+msgstr "The report has been generated!"
+
+#: src/telegram/telegram_api.py:5
+msgid "Выберите промежуток времени"
+msgstr "Select a time interval"
+
+#: src/telegram/buttons.py:83
+msgid "День"
+msgstr "Day"
+
+#: src/telegram/buttons.py:83
+msgid "Месяц"
+msgstr "Month"
+
+#: src/telegram/buttons.py:83
+msgid "Год"
+msgstr "Year"
+
 #: src/telegram/telegram_api.py:59
 msgid "Похоже такая почта уже существует! Выберите другую"
 msgstr "It looks like such a mail already exists! Choose another one"
