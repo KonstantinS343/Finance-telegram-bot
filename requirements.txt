@@ -101,7 +101,7 @@ python-dotenv==1.0.0
     # via -r requirements.in
 pytz==2023.3
     # via babel
-redis==4.6.0
+redis==5.0.0
     # via -r requirements.in
 six==1.16.0
     # via python-dateutil
