@@ -31,7 +31,7 @@ babel==2.9.1
     #   aiogram
 billiard==4.1.0
     # via celery
-celery==5.3.1
+celery==5.3.4
     # via -r requirements.in
 certifi==2023.7.22
     # via aiogram
@@ -65,7 +65,7 @@ idna==3.4
     # via yarl
 kiwisolver==1.4.4
     # via matplotlib
-kombu==5.3.1
+kombu==5.3.2
     # via celery
 magic-filter==1.0.11
     # via aiogram
