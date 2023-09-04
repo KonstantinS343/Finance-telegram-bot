@@ -4,7 +4,9 @@
 #
 #    pip-compile
 #
-aiogram==2.25.1
+aiofiles==23.1.0
+    # via aiogram
+aiogram==3.0.0
     # via -r requirements.in
 aiohttp==3.8.5
     # via aiogram
@@ -16,6 +18,8 @@ alembic==1.11.2
     # via -r requirements.in
 amqp==5.1.1
     # via kombu
+annotated-types==0.5.0
+    # via pydantic
 async-timeout==4.0.2
     # via
     #   aiohttp
@@ -26,9 +30,7 @@ asyncpg==0.28.0
 attrs==23.1.0
     # via aiohttp
 babel==2.9.1
-    # via
-    #   -r requirements.in
-    #   aiogram
+    # via -r requirements.in
 billiard==4.1.0
     # via celery
 celery==5.3.1
@@ -91,6 +93,10 @@ prompt-toolkit==3.0.39
     # via click-repl
 psycopg2-binary==2.9.7
     # via -r requirements.in
+pydantic==2.3.0
+    # via aiogram
+pydantic-core==2.6.3
+    # via pydantic
 pyparsing==3.0.9
     # via matplotlib
 python-dateutil==2.8.2
@@ -111,8 +117,11 @@ sqlalchemy==2.0.19
     #   alembic
 typing-extensions==4.7.1
     # via
+    #   aiogram
     #   aioredis
     #   alembic
+    #   pydantic
+    #   pydantic-core
     #   sqlalchemy
 tzdata==2023.3
     # via celery
