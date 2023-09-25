@@ -105,7 +105,7 @@ redis==4.6.0
     # via -r requirements.in
 six==1.16.0
     # via python-dateutil
-sqlalchemy==2.0.19
+sqlalchemy==2.0.21
     # via
     #   -r requirements.in
     #   alembic
