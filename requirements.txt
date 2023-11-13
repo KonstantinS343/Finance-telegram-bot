@@ -29,9 +29,9 @@ babel==2.9.1
     # via
     #   -r requirements.in
     #   aiogram
-billiard==4.1.0
+billiard==4.2.0
     # via celery
-celery==5.3.1
+celery==5.3.5
     # via -r requirements.in
 certifi==2023.7.22
     # via aiogram
@@ -65,7 +65,7 @@ idna==3.4
     # via yarl
 kiwisolver==1.4.4
     # via matplotlib
-kombu==5.3.1
+kombu==5.3.3
     # via celery
 magic-filter==1.0.11
     # via aiogram
@@ -116,7 +116,7 @@ typing-extensions==4.7.1
     #   sqlalchemy
 tzdata==2023.3
     # via celery
-vine==5.0.0
+vine==5.1.0
     # via
     #   amqp
     #   celery
