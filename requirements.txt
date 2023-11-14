@@ -6,7 +6,7 @@
 #
 aiogram==2.25.1
     # via -r requirements.in
-aiohttp==3.8.5
+aiohttp==3.8.6
     # via aiogram
 aioredis==2.0.1
     # via -r requirements.in
